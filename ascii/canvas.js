@@ -6,14 +6,16 @@ export default function(width, height) {
     // load render target
 
     let canvas = {
-        node: document.createElement('pre'),
+        element: document.createElement('pre'),
+        textNode: document.createTextNode(''),
         debug: '',
         init: false,
         width: width,
         height: height
     };
 
-    document.body.appendChild(canvas.node);
+    canvas.element.appendChild(canvas.textNode);
+    document.body.appendChild(canvas.element);
 
     canvas.findIndex = (x,y) => {
         return (x|0) + ((y|0) * canvas.width);
@@ -36,7 +38,7 @@ export default function(width, height) {
     canvas.respond = function() {
         requestAnimationFrame(function (){
             if (!canvas.rawWidth) {
-                let { width, height } = canvas.node.getBoundingClientRect();
+                let { width, height } = canvas.element.getBoundingClientRect();
                 canvas.rawWidth = width;
                 Object.assign(colourWrapper.style, {
                     width: width + 'px',
@@ -45,7 +47,7 @@ export default function(width, height) {
             }
             
             let scaleX = window.innerWidth / canvas.rawWidth;
-            canvas.node.style.transform = `scale(${scaleX})`;
+            canvas.element.style.transform = `scale(${scaleX})`;
             colourWrapper.style.transform = `scale(${scaleX})`;
 
         });
@@ -65,6 +67,7 @@ export default function(width, height) {
     // account for font rendering differences in different browsers / OS
     // yes really
     let osStr = navigator.appVersion;
+    console.log(navigator.appVersion+ 'asd');
     if (window.chrome && window.chrome.webstore) {
         // chrome
         if (~osStr.indexOf('Win')) { 
@@ -102,7 +105,7 @@ export default function(width, height) {
 
     canvas.render = function(vram) {
         
-        generateBoxShadow(canvas, vram);
+        // generateBoxShadow(canvas, vram);
 
         if (canvas.debug) {
             let location = vram.length - (width*2) + 1;
@@ -111,7 +114,7 @@ export default function(width, height) {
             });
         }
 
-        canvas.node.textContent = formatVRAM(vram, width);
+        canvas.textNode.nodeValue = formatVRAM(vram, width);
 
         if (!canvas.init) {
             canvas.respond();
