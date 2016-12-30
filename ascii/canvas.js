@@ -132,8 +132,6 @@ function formatVRAM(vram, width) {
 
 function generateBoxShadow(canvas, vram) {
 
-    // debounce
-
     let { pixels } = canvas;
 
     let colourRAM = [];

@@ -1,11 +1,11 @@
-# WebGL Fractals
+# ASCII Fractals
 
-Inspired by [SVG fractals with React](https://swizec.com/blog/animating-svg-nodes-react-preact-inferno-vue/swizec/7311)
+Following on from [webgl-fractals](https://github.com/kirjavascript/webgl-fractals)
 
-SVG is a bad choice for this task as manipulating 2k+ DOM nodes at once is extremely slow.
+To display the text, on each render a string is generated and passed to a single pre element.
 
-Using webGL allows us to use the GPU and get insanely smooth animation.
+The colours are also displayed from a single element. The method used takes advantage of the ability to chain multiple box-shadow values to a single property.
 
-With some performance tweaks, it's possible to animate 32k nodes and retain full speed. That's 16 times as many as the SVG versions.
+This presents a problem when trying to line up the colours with text, due to text rendering being completely inconsistent between browsers and OSes. The current solution is to simply make adjustments for the different environments.
 
-![](/tree.gif)
+At the time of writing, this has been tested on all available versions of firefox, chrome, and edge on windows, mac, and linux - but full support is extremely unlikely.
