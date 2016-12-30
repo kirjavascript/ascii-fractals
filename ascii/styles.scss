@@ -22,7 +22,7 @@ pre {
     margin: 0;
     color: #444;
     font-weight: 900;
-    border: 1px solid red;
+    outline: 10px solid red;
 }
 
 .colourWrapper {
@@ -31,5 +31,5 @@ pre {
     left: 0;
     transform-origin: 0% 100%;
     pointer-events: none;
-    opacity: 0.5;
+    opacity: 0.4;
 }

@@ -20,8 +20,16 @@ export default function(width, height) {
     };
 
     canvas.findXY = (index) => {
-
+        return {
+            x: index % canvas.width,
+            y: (index / canvas.width)|0
+        };
     };
+
+    canvas.glyphs = '█▓▒#░≡=:*\'-·#$%&';
+
+    canvas.colours = '4054274483582782982a84b77d5bd2fe3'
+        .match(/.../g).map((c)=>'#'+c);
 
     // responsiveness
     
@@ -114,9 +122,11 @@ function formatVRAM(vram, width) {
 
 // colourRAM
 
-let palette = '4054274483582782982a84b77d5bd2fe3'.match(/.../g).map((c)=>'#'+c);
+
 
 function generateBoxShadow(canvas, vram) {
+
+    // debounce
 
     let { pixels } = canvas;
 
@@ -133,19 +143,21 @@ function generateBoxShadow(canvas, vram) {
     }
 
     for (let i=0;i<canvas.width;i++) {
-        colourRAM.push(getPixel(palette[0], i, 0, width, height));
-        colourRAM.push(getPixel(palette[1], i, canvas.height-1, width, height));
+        colourRAM.push(getPixel(canvas.colours[0], i, 0, width, height));
+        colourRAM.push(getPixel(canvas.colours[1], i, canvas.height-1, width, height));
     }
     for (let i=0;i<canvas.height;i++) {
-        colourRAM.push(getPixel(palette[2], 0, i, width, height));
-        colourRAM.push(getPixel(palette[3], canvas.width-1, i, width, height));
+        colourRAM.push(getPixel(canvas.colours[2], 0, i, width, height));
+        colourRAM.push(getPixel(canvas.colours[3], canvas.width-1, i, width, height));
     }
 
-    // for (let i=0;i < vram.length;i++) {
-    //     if (vram == '█') {
-    //         console.log(vram);
-    //     }
-    // }
+    for (let i=0;i < vram.length;i++) {
+        if (vram[i] != ' ') {
+            let depth = canvas.glyphs.indexOf(vram[i]);
+            let { x, y } = canvas.findXY(i);
+            colourRAM.push(getPixel(canvas.colours[depth], x, y, width, height));
+        }
+    }
 
     pixels.style.boxShadow = colourRAM.join`,`;
 

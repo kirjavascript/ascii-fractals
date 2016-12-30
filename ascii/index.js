@@ -8,13 +8,12 @@ export let canvas, tree = {};
 // grab ?resolution= URL param
 let resolution = ((location.search.slice(location.search.indexOf('=')+1)))||1;
 
-export const width = 180 * resolution,
+export const width = 144 * resolution,
     height = (width/4)*3,
     cubeSize = width / 9,
     maxDepth = 10,
     octAngle = Math.PI/4,
-    blankCanvas = (' '.repeat(width)).repeat(height),
-    palette = '█▓▒#░≡=:*\'-·#$%&';
+    blankCanvas = (' '.repeat(width)).repeat(height);
 
 // init
 
@@ -182,7 +181,7 @@ function drawCube(cube, vram) {
 
         let [ix, iy] = indices[i];
 
-        draw(x + ix, y + iy, vram, palette[depth+1]);
+        draw(x + ix, y + iy, vram, canvas.glyphs[depth+1]);
     }
 
 }
