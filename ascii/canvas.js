@@ -26,7 +26,7 @@ export default function(width, height) {
         };
     };
 
-    canvas.glyphs = '█▓▒#░≡=:*\'-·#$%&';
+    canvas.glyphs = '#$&?%≡=:*\'-·';
 
     canvas.colours = '4054274483582782982a84b77d5bd2fe3'
         .match(/.../g).map((c)=>'#'+c);
@@ -68,31 +68,41 @@ export default function(width, height) {
     if (window.chrome && window.chrome.webstore) {
         // chrome
         if (~osStr.indexOf('Win')) { 
-            // pixels.style.width = '7px';
-            // pixels.style.height = '6.3px';
+            pixels.style.width = '7px';
+            pixels.style.height = '6.3px';
         }
-        else if (~osStr.indexOf('Linux')) {
+        else { // linux + mac
             pixels.style.width = '6px';
             pixels.style.height = '6.3px';
-            pixels.style.transform = 'scaleX(1.102) scaleY(1.002)';
+            pixels.style.transform = 'scaleX(1.1)';
         }
     }
     else if (typeof InstallTrigger !== 'undefined') {
-        // firefox
-        pixels.style.width = '7px';
-        pixels.style.height = '6.9px';
-        pixels.style.transform = 'scaleY(1.106)';
+        // firefox;
+        if (~osStr.indexOf('Mac')) {
+            pixels.style.width = '6px';
+            pixels.style.height = '6px';
+            pixels.style.transform = 'scaleX(1.1) scaleY(1.11)';
+        }
+        else { // window + linux
+            pixels.style.width = '7px';
+            pixels.style.height = '6.9px';
+            pixels.style.transform = 'scaleY(1.106)';
+        }
     }
     else if (window.StyleMedia) {
         // IE Edge
-        // pixels.style.width = '6.6px';
-        // pixels.style.height = '6.98px';
+        pixels.style.width = '6px';
+        pixels.style.height = '6px';
+        pixels.style.transform = 'scaleX(1.1) scaleY(1.11)';
     }
     canvas.pixels = pixels;
 
     // renderer
 
     canvas.render = function(vram) {
+        
+        generateBoxShadow(canvas, vram);
 
         if (canvas.debug) {
             let location = vram.length - (width*2) + 1;
@@ -100,8 +110,6 @@ export default function(width, height) {
                 vram[location + i] = ch;
             });
         }
-
-        generateBoxShadow(canvas, vram);
 
         canvas.node.textContent = formatVRAM(vram, width);
 
@@ -122,8 +130,6 @@ function formatVRAM(vram, width) {
 
 // colourRAM
 
-
-
 function generateBoxShadow(canvas, vram) {
 
     // debounce
@@ -133,22 +139,13 @@ function generateBoxShadow(canvas, vram) {
     let colourRAM = [];
 
     let [ width, height ] = [
-        parseInt(pixels.style.width, 10),
-        parseInt(pixels.style.height, 10)
+        parseInt(pixels.style.width, 10)|0,
+        parseInt(pixels.style.height, 10)|0
     ];
 
     if (!width || !height) {
         canvas.debug = 'Error: colours are not available for this browser/OS';
         return;
-    }
-
-    for (let i=0;i<canvas.width;i++) {
-        colourRAM.push(getPixel(canvas.colours[0], i, 0, width, height));
-        colourRAM.push(getPixel(canvas.colours[1], i, canvas.height-1, width, height));
-    }
-    for (let i=0;i<canvas.height;i++) {
-        colourRAM.push(getPixel(canvas.colours[2], 0, i, width, height));
-        colourRAM.push(getPixel(canvas.colours[3], canvas.width-1, i, width, height));
     }
 
     for (let i=0;i < vram.length;i++) {
