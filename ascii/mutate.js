@@ -9,7 +9,12 @@ window.addEventListener('mousemove', (e) => {
     let gScale = globalScale(scale);
     mutate(tilt, gScale);
 });
-
+window.addEventListener('touchmove', (e) => {
+    let tilt = ((e.touches[0].pageX / window.innerWidth) -.5) * 4;
+    let scale = (e.touches[0].pageY / window.innerHeight);
+    let gScale = globalScale(scale);
+    mutate(tilt, gScale);
+});
 function mutate(tiltDelta, gScale) {
 
     ~function recurse(node) {

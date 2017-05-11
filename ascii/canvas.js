@@ -105,7 +105,7 @@ export default function(width, height) {
 
     canvas.render = function(vram) {
         
-        // generateBoxShadow(canvas, vram);
+        generateBoxShadow(canvas, vram);
 
         if (canvas.debug) {
             let location = vram.length - (width*2) + 1;

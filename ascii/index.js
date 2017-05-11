@@ -138,12 +138,12 @@ function drawCube(cube, vram) {
 
     // massive performance improvement;
     // don't render if it falls outside the box
-    // if (
-    //     x < -size/2
-    //     || x > width + size/2
-    //     || y < -size/2
-    //     || y > height + size/2
-    // ) return;
+    if (
+        x < -size/2
+        || x > width + size/2
+        || y < -size/2
+        || y > height + size/2
+    ) return;
 
     // move to top right
     x = x - (size/2);
